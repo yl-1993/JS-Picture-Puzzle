@@ -1,5 +1,5 @@
 app.Board = (function(window, undefined) {
-    var gridNum = 2;
+    var gridNum = 3;
     var maxClientWidth = 400;
 
     var hasTouch = 'ontouchstart' in window,
@@ -154,7 +154,7 @@ app.Board = (function(window, undefined) {
     var showBlessing = function(board) {
         timer = setTimeout(function() {
             board.style.opacity = 0;
-            document.body.style.backgroundImage="url(_ui/img/bless.jpg)";
+            document.body.style.backgroundImage="url(ui/img/bless.jpg)";
         }, 2000);
     }
     
