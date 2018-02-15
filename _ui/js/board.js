@@ -128,7 +128,6 @@ app.Board = (function(window, undefined) {
         }
 
         if (isEnd) {
-            console.log('show success info');
             transformCoords = convert.arrayIndexToTransform(MissingPiece);
                     
             hidden_piece = new app.Piece({
@@ -146,9 +145,17 @@ app.Board = (function(window, undefined) {
             timer = setTimeout(function() {
                 hidden_piece.element.style.opacity = 1;
             }, 10);
+
             return true;
         }
         return false;
+    }
+
+    var showBlessing = function(board) {
+        timer = setTimeout(function() {
+            board.style.opacity = 0;
+            document.body.style.backgroundImage="url(_ui/img/bless.jpg)";
+        }, 2000);
     }
     
     var addActiveClass = function(pieces) {
@@ -410,6 +417,7 @@ app.Board = (function(window, undefined) {
         
         if (completePuzzle(this.pieces)) {
             this.isEnd = true;
+            showBlessing(this.element);
         } else {
             app.utils.addClass(this.element, ANIMATE_CSS_CLASS);
         } 
