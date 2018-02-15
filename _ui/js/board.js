@@ -1,5 +1,6 @@
 app.Board = (function(window, undefined) {
     var gridNum = 3;
+    var maxClientWidth = 400;
 
     var hasTouch = 'ontouchstart' in window,
         resizeEvent, // Defined later because android doesn't always work with orientation change, so I need to know the platform.
@@ -184,7 +185,7 @@ app.Board = (function(window, undefined) {
     var Board = function(options) {
         var clientDimensions = app.utils.getClientDimensions();
         
-        widthOfBoard = options.width || ( (clientDimensions.x > 500) ? 500 : clientDimensions.x );
+        widthOfBoard = options.width || ( (clientDimensions.x > maxClientWidth) ? maxClientWidth : clientDimensions.x );
         heightOfBoard = options.height || widthOfBoard; // because it is a square
         tileWidth = (widthOfBoard/gridNum);
         tileHeight = (heightOfBoard/gridNum);
@@ -379,7 +380,7 @@ app.Board = (function(window, undefined) {
         app.utils.removeClass(this.element, ANIMATE_CSS_CLASS);
         
         // xxx don't repeat this getclient code from up above - DRY
-        var clientWidth = (app.utils.getClientDimensions().x > 500) ? 500 : app.utils.getClientDimensions().x;
+        var clientWidth = (app.utils.getClientDimensions().x > maxClientWidth) ? maxClientWidth : app.utils.getClientDimensions().x;
         tileWidth = clientWidth / gridNum;
         tileHeight = clientWidth / gridNum;
         
