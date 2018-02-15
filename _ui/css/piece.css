@@ -17,7 +17,3 @@
 .piece.active {
     z-index: 10;
 }
-
-.piece.showing {
-	opacity: 1;
-}
