@@ -1,4 +1,6 @@
 app.Board = (function(window, undefined) {
+    var gridNum = 3;
+
     var hasTouch = 'ontouchstart' in window,
         resizeEvent, // Defined later because android doesn't always work with orientation change, so I need to know the platform.
         startEvent = hasTouch ? 'touchstart' : 'mousedown',
@@ -39,13 +41,13 @@ app.Board = (function(window, undefined) {
 
         arrayIndexToBoardCoords: function(index) {
             return {
-                x: index % 4, 
-                y: Math.floor(index/4)
+                x: index % gridNum, 
+                y: Math.floor(index/gridNum)
             };
         },
         
         boardCoordsToArrayIndex: function(point) {
-            return (point.y * 4) + point.x;
+            return (point.y * gridNum) + point.x;
         }
     };
     
@@ -53,7 +55,7 @@ app.Board = (function(window, undefined) {
         pieces: function(board) {
             var pieces = [],
                 id = 0,
-                gridSize = 4*4,
+                gridSize = gridNum*gridNum,
                 randomPiece = Math.floor(Math.random() * gridSize);
             
             for (var i = 0; i < gridSize; i++) {
@@ -184,8 +186,8 @@ app.Board = (function(window, undefined) {
         
         widthOfBoard = options.width || ( (clientDimensions.x > 500) ? 500 : clientDimensions.x );
         heightOfBoard = options.height || widthOfBoard; // because it is a square
-        tileWidth = (widthOfBoard/4);
-        tileHeight = (heightOfBoard/4);
+        tileWidth = (widthOfBoard/gridNum);
+        tileHeight = (heightOfBoard/gridNum);
         
         resizeEvent = ( ( 'onorientationchange' in window ) && app.isAndroid)  ? 'orientationchange' : 'resize';
         
@@ -247,7 +249,7 @@ app.Board = (function(window, undefined) {
             arrayIndex = this.boardInfo.triggeredArrayIndex,
             emptyPieceIndex = this.getEmptyTileArrayIndex(),
             piecesToMoveArray = [],
-            column = emptyPieceIndex % 4;
+            column = emptyPieceIndex % gridNum;
             
         if (direction.left) {
             for (var leftIndex = rowDistance+1; 0 >= leftIndex; leftIndex++) {
@@ -259,13 +261,13 @@ app.Board = (function(window, undefined) {
             }
         } else if (direction.up) {
             for (var aboveIndex = emptyPieceIndex-1; arrayIndex <= aboveIndex; aboveIndex--) {
-                if (aboveIndex % 4 === column) {
+                if (aboveIndex % gridNum === column) {
                     piecesToMoveArray.unshift(this.pieces[aboveIndex]);
                 }                        
             }
         } else if (direction.down) {
             for (var belowIndex = emptyPieceIndex+1; arrayIndex >= belowIndex; belowIndex++) {
-                if (belowIndex % 4 === column) {
+                if (belowIndex % gridNum === column) {
                     piecesToMoveArray.unshift(this.pieces[belowIndex]);
                 }
             }             
@@ -378,8 +380,8 @@ app.Board = (function(window, undefined) {
         
         // xxx don't repeat this getclient code from up above - DRY
         var clientWidth = (app.utils.getClientDimensions().x > 500) ? 500 : app.utils.getClientDimensions().x;
-        tileWidth = clientWidth / 4;
-        tileHeight = clientWidth / 4;
+        tileWidth = clientWidth / gridNum;
+        tileHeight = clientWidth / gridNum;
         
         this.element.style.width=clientWidth+"px";
         this.element.style.height=clientWidth+"px";
@@ -424,10 +426,10 @@ app.Board = (function(window, undefined) {
                 that.pieces[arrayIndex-1-i] = piece;
             }        
             else if (direction.up) {
-                that.pieces[arrayIndex+4+(i*4)] = piece;
+                that.pieces[arrayIndex+gridNum+(i*gridNum)] = piece;
             }        
             else if (direction.down) {
-                that.pieces[arrayIndex-4-(i*4)] = piece;
+                that.pieces[arrayIndex-gridNum-(i*gridNum)] = piece;
             }
         });
         
