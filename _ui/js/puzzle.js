@@ -15,10 +15,7 @@ app.Puzzle = (function(window, undefined) {
     };
     
     Puzzle.prototype.initEvents = function() {
-        var that = this;
-        document.getElementById("shuffle").addEventListener(endEvent, function() {
-            that.board.shuffle();
-        }, false);
+        this.board.shuffle();
     };
     return Puzzle;
 })(window);

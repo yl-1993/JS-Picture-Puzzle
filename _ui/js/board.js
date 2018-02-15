@@ -1,5 +1,5 @@
 app.Board = (function(window, undefined) {
-    var gridNum = 3;
+    var gridNum = 2;
     var maxClientWidth = 400;
 
     var hasTouch = 'ontouchstart' in window,
@@ -113,6 +113,43 @@ app.Board = (function(window, undefined) {
             }
         });
     };
+
+    var completePuzzle = function(pieces) {
+        var isEnd = true;
+        var MissingPiece = -1;
+        for (var i = 0, piecesLength = pieces.length; i < piecesLength; i++) {
+            if (pieces[i] == null) {
+                MissingPiece = i;
+            } else {
+                if (i == pieces[i].id) continue;
+                isEnd = false;
+                break;
+            }
+        }
+
+        if (isEnd) {
+            console.log('show success info');
+            transformCoords = convert.arrayIndexToTransform(MissingPiece);
+                    
+            hidden_piece = new app.Piece({
+                width: tileWidth,
+                height: tileHeight,
+                backgroundSize: widthOfBoard,
+                opacity: 0,
+                id: MissingPiece,
+                backgroundPosition: (-transformCoords.x)+"px "+(-transformCoords.y)+"px"
+            });
+            
+            translateByPosition(hidden_piece, transformCoords);
+            this.board.appendChild(hidden_piece.element);
+            
+            timer = setTimeout(function() {
+                hidden_piece.element.style.opacity = 1;
+            }, 10);
+            return true;
+        }
+        return false;
+    }
     
     var addActiveClass = function(pieces) {
         pieces.forEach(function(piece) {
@@ -219,6 +256,7 @@ app.Board = (function(window, undefined) {
     Board.prototype.initEvents = function() {
         var that = this;
         
+        this.isEnd = false;
         this.element.addEventListener(startEvent, this, false);
         window.addEventListener(resizeEvent, this, false);
         
@@ -228,6 +266,7 @@ app.Board = (function(window, undefined) {
     };
         
     Board.prototype.handleEvent = function(e) {
+        if (this.isEnd) return;
         switch (e.type) {
             case startEvent:
                 this.startEvent(e);
@@ -362,7 +401,6 @@ app.Board = (function(window, undefined) {
             this.movePieces();
         } else {
             setPiecesTransform(this.pieces);
-            
         }
 
         this.element.removeEventListener(moveEvent, this, false);
@@ -370,7 +408,11 @@ app.Board = (function(window, undefined) {
                         
         this.lastPoint = null;
         
-        app.utils.addClass(this.element, ANIMATE_CSS_CLASS);
+        if (completePuzzle(this.pieces)) {
+            this.isEnd = true;
+        } else {
+            app.utils.addClass(this.element, ANIMATE_CSS_CLASS);
+        } 
     };
     
     Board.prototype.resizeBoard = function() {

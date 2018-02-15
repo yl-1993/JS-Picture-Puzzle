@@ -10,6 +10,7 @@ app.Piece = (function(window, undefined) {
         options.backgroundPosition = options.backgroundPosition || "0 0";
         options.cssClass = options.cssClass || ID_NAMESPACE;
         options.backgroundSize = options.backgroundSize || "50";
+        if (options.opacity != 0) options.opacity = options.opacity || 1;
         
         this.element = document.createElement("div");
         
@@ -26,6 +27,7 @@ app.Piece = (function(window, undefined) {
         this.element.style.height = styles.height+"px";
         this.element.style.backgroundSize = styles.backgroundSize+"px "+styles.backgroundSize+"px";
         this.element.style.backgroundPosition = styles.backgroundPosition;
+        this.element.style.opacity = styles.opacity;
     };
     
     return Piece;
