@@ -31,6 +31,7 @@ header > h1 {
 @media only screen and (max-width: 629px) {
     body {
         background: transparent url('../img/bg-small.jpg') no-repeat center center;
+        background-size:100%;
     }
     
     header > h1 {

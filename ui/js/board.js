@@ -154,6 +154,7 @@ app.Board = (function(window, undefined) {
     var showBlessing = function(board) {
         timer = setTimeout(function() {
             board.style.opacity = 0;
+            document.title = 'Happy 2018!';
             document.body.style.backgroundImage="url(ui/img/bless.jpg)";
         }, 2000);
     }
